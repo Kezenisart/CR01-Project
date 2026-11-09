@@ -1,0 +1,21 @@
+{
+  "size": 64,
+  "views": 30,
+  "dense_views": 180,
+  "counts": {
+    "train": 256,
+    "validation": 32,
+    "test": 64
+  },
+  "seeds": {
+    "train": 1101,
+    "validation": 2202,
+    "test": 3303
+  },
+  "training_seed": 4404,
+  "epochs": 30,
+  "batch_size": 8,
+  "learning_rate": 0.001,
+  "threads": 4,
+  "phantom_generator": "deepinv.RandomPhantomDataset"
+}
