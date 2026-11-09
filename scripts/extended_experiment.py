@@ -46,7 +46,6 @@ def train_model(network, name, seed, config, training, validation, folder):
     # The residual model should initially return the FBP image unchanged.
     assert torch.equal(network(training['fbp'][:1]), training['fbp'][:1])
     optimizer = torch.optim.Adam(network.parameters(), lr=config['learning_rate'])
-    # Give both networks the same shuffled image order for a given seed.
     loader = DataLoader(
         TensorDataset(training['fbp'], training['target']),
         batch_size=config['batch_size'],
@@ -68,7 +67,6 @@ def train_model(network, name, seed, config, training, validation, folder):
             optimizer.step()
             total_loss += loss.item() * len(targets)
 
-        # Validation chooses the saved model; test scores never enter this choice.
         network.eval()
         predictions = predict(network, validation['fbp'], config['batch_size'])
         validation_loss = (predictions - validation['target']).square().mean().item()
@@ -88,7 +86,6 @@ def train_model(network, name, seed, config, training, validation, folder):
                 'seed': seed,
                 'name': name,
             }
-            # After epoch 30, only the 100-epoch checkpoint can change.
             for budget in BUDGETS:
                 if epoch <= budget:
                     torch.save(checkpoint, folder / f'best_{budget}.pt')
